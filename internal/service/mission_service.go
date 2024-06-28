@@ -8,6 +8,16 @@ import (
 	"spy-cats/internal/repository"
 )
 
+type CreateMissionArgs struct {
+	CatId   uuid.NullUUID   `json:"cat_id"`
+	Targets []MissionTarget `json:"targets"`
+}
+
+type MissionTarget struct {
+	Name    string `json:"name"`
+	Country string `json:"country"`
+}
+
 type UpdateMissingArgs struct {
 	CatId  uuid.NullUUID `json:"cat_id"`
 	Status model.Status  `json:"status"`
@@ -26,10 +36,17 @@ type MissionListItem struct {
 
 type MissionService struct {
 	missionRepository *repository.MissionRepository
+	targetRepository  *repository.TargetRepository
 }
 
-func NewMissionService(missionRepository *repository.MissionRepository) *MissionService {
-	return &MissionService{missionRepository: missionRepository}
+func NewMissionService(
+	missionRepository *repository.MissionRepository,
+	targetRepository *repository.TargetRepository,
+) *MissionService {
+	return &MissionService{
+		missionRepository: missionRepository,
+		targetRepository:  targetRepository,
+	}
 }
 
 func (s *MissionService) GetById(ctx context.Context, id uuid.UUID) (*MissionDetails, error) {
@@ -78,6 +95,24 @@ func (s *MissionService) Delete(ctx context.Context, id uuid.UUID) error {
 	}
 
 	return s.missionRepository.Delete(ctx, id)
+}
+
+// TODO: wrap into database transaction
+func (s *MissionService) Create(ctx context.Context, args *CreateMissionArgs) (*uuid.UUID, error) {
+	mission := model.NewMission(args.CatId)
+
+	if err := s.missionRepository.Create(ctx, mission); err != nil {
+		return nil, err
+	}
+
+	for _, missionTarget := range args.Targets {
+		target := model.NewTarget(mission.ID, missionTarget.Name, missionTarget.Country)
+		if err := s.targetRepository.Create(ctx, target); err != nil {
+			return nil, err
+		}
+	}
+
+	return &mission.ID, nil
 }
 
 func (s *MissionService) Update(ctx context.Context, id uuid.UUID, args *UpdateMissingArgs) error {

@@ -17,6 +17,20 @@ func NewMissionRepository(conn *pgx.Conn) *MissionRepository {
 	return &MissionRepository{conn: conn}
 }
 
+func (r *MissionRepository) Create(ctx context.Context, mission *model.Mission) error {
+	query := `
+INSERT INTO missions (id, cat_id, status)
+VALUES ($1, $2, $3)`
+
+	_, err := r.conn.Exec(ctx, query,
+		mission.ID,
+		mission.CatId,
+		mission.Status,
+	)
+
+	return err
+}
+
 func (r *MissionRepository) GetById(ctx context.Context, id uuid.UUID) (*model.Mission, error) {
 	query := `SELECT * FROM missions WHERE id = $1;`
 

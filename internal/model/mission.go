@@ -15,10 +15,10 @@ type Mission struct {
 	Status Status
 }
 
-func NewMission(catId uuid.UUID) *Mission {
+func NewMission(catId uuid.NullUUID) *Mission {
 	return &Mission{
 		ID:     uuid.New(),
-		CatId:  uuid.NullUUID{UUID: catId},
+		CatId:  catId,
 		Status: Initiated,
 	}
 }

@@ -16,12 +16,11 @@ type Target struct {
 	Mission *Mission
 }
 
-func NewTarget(missionId uuid.UUID, name string, country string, notes string) *Target {
+func NewTarget(missionId uuid.UUID, name string, country string) *Target {
 	return &Target{
 		Id:        uuid.New(),
 		Name:      name,
 		Country:   country,
-		Notes:     notes,
 		Status:    Initiated,
 		MissionId: missionId,
 	}

@@ -12,7 +12,6 @@ type CreateTargetArgs struct {
 	MissionId uuid.UUID    `json:"mission_id"`
 	Name      string       `json:"name"`
 	Country   string       `json:"country"`
-	Notes     string       `json:"notes"`
 	Status    model.Status `json:"status"`
 }
 
@@ -50,7 +49,6 @@ func (s *TargetService) Create(ctx context.Context, args *CreateTargetArgs) (*uu
 		args.MissionId,
 		args.Name,
 		args.Country,
-		args.Notes,
 	)
 
 	if err := s.repository.Create(ctx, target); err != nil {

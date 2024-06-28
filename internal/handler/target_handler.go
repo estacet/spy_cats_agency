@@ -61,7 +61,7 @@ func (h *TargetCRUDHandler) update(c *gin.Context) {
 
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
-			"message": "Failed to update spy cat profile",
+			"message": "Failed to update target",
 			"error":   err.Error(),
 		})
 
@@ -84,7 +84,7 @@ func (h *TargetCRUDHandler) update(c *gin.Context) {
 	parsedId, err := uuid.Parse(id)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
-			"message": "Failed to update spy cat profile",
+			"message": "Failed to update target",
 			"error":   err.Error(),
 		})
 

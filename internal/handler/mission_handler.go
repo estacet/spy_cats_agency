@@ -25,6 +25,7 @@ func (h *MissionCRUDHandler) RegisterRoutes(router *gin.Engine) {
 
 	router.GET(resourcePath, h.get)
 	router.GET(basePath, h.getList)
+	router.POST(basePath, h.create)
 	router.PATCH(resourcePath, h.update)
 	router.DELETE(resourcePath, h.delete)
 }
@@ -69,13 +70,49 @@ func (h *MissionCRUDHandler) getList(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"missions": missionList})
 }
 
+func (h *MissionCRUDHandler) create(c *gin.Context) {
+	bodyBytes, err := io.ReadAll(c.Request.Body)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"message": "Failed to create mission",
+			"error":   err.Error(),
+		})
+
+		return
+	}
+	defer c.Request.Body.Close()
+
+	args := new(service.CreateMissionArgs)
+
+	if err := json.Unmarshal(bodyBytes, args); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"message": "Failed to create mission",
+			"error":   err.Error(),
+		})
+
+		return
+	}
+
+	id, err := h.missionService.Create(c, args)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"message": "Failed to create mission",
+			"error":   err.Error(),
+		})
+
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"id": id})
+}
+
 func (h *MissionCRUDHandler) update(c *gin.Context) {
 	id := c.Params.ByName("id")
 
 	parsedId, err := uuid.Parse(id)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
-			"message": "Failed to delete mission by id",
+			"message": "Failed to update mission",
 			"error":   err.Error(),
 		})
 
@@ -85,7 +122,7 @@ func (h *MissionCRUDHandler) update(c *gin.Context) {
 	bodyBytes, err := io.ReadAll(c.Request.Body)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
-			"message": "Failed to update mission profile",
+			"message": "Failed to update mission",
 			"error":   err.Error(),
 		})
 
@@ -97,7 +134,7 @@ func (h *MissionCRUDHandler) update(c *gin.Context) {
 
 	if err := json.Unmarshal(bodyBytes, args); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
-			"message": "Failed to update mission profile",
+			"message": "Failed to update mission",
 			"error":   err.Error(),
 		})
 
@@ -107,7 +144,7 @@ func (h *MissionCRUDHandler) update(c *gin.Context) {
 	err = h.missionService.Update(c, parsedId, args)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
-			"message": "Failed to update mission by id",
+			"message": "Failed to update mission",
 			"error":   err.Error(),
 		})
 
@@ -123,7 +160,7 @@ func (h *MissionCRUDHandler) delete(c *gin.Context) {
 	parsedId, err := uuid.Parse(id)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
-			"message": "Failed to delete mission by id",
+			"message": "Failed to delete mission",
 			"error":   err.Error(),
 		})
 
@@ -133,7 +170,7 @@ func (h *MissionCRUDHandler) delete(c *gin.Context) {
 	err = h.missionService.Delete(c, parsedId)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
-			"message": "Failed to delete mission by id",
+			"message": "Failed to delete mission",
 			"error":   err.Error(),
 		})
 
