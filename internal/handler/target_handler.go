@@ -23,6 +23,7 @@ func (h *TargetCRUDHandler) RegisterRoutes(router *gin.Engine) {
 
 	router.POST(basePath, h.create)
 	router.PATCH(resourcePath, h.update)
+	router.DELETE(resourcePath, h.delete)
 }
 
 func (h *TargetCRUDHandler) create(c *gin.Context) {
@@ -103,4 +104,30 @@ func (h *TargetCRUDHandler) update(c *gin.Context) {
 	}
 
 	c.Status(http.StatusOK)
+}
+
+func (h *TargetCRUDHandler) delete(c *gin.Context) {
+	id := c.Params.ByName("id")
+
+	parsedId, err := uuid.Parse(id)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"message": "Failed to delete target",
+			"error":   err.Error(),
+		})
+
+		return
+	}
+
+	err = h.targetService.Delete(c, parsedId)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"message": "Failed to delete target",
+			"error":   err.Error(),
+		})
+
+		return
+	}
+
+	c.Status(http.StatusNoContent)
 }

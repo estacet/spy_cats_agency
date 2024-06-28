@@ -72,3 +72,11 @@ func (r *TargetRepository) Update(ctx context.Context, target *model.Target) err
 
 	return err
 }
+
+func (r *TargetRepository) Delete(ctx context.Context, id uuid.UUID) error {
+	query := `DELETE FROM targets WHERE id = $1`
+
+	_, err := r.conn.Exec(ctx, query, id)
+
+	return err
+}
