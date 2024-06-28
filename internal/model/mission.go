@@ -6,7 +6,6 @@ type Status string
 
 const (
 	Initiated Status = "initiated"
-	Ongoing   Status = "ongoing"
 	Completed Status = "completed"
 )
 

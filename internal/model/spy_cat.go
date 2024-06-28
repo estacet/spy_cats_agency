@@ -12,7 +12,7 @@ type SpyCat struct {
 	Salary            float64   `json:"salary"`
 }
 
-func NewSpyCat(name string, yearsOfExperience int, breed string, salary float64) (*SpyCat, error) {
+func NewSpyCat(name string, yearsOfExperience int, breed string, salary float64) *SpyCat {
 	c := &SpyCat{
 		ID:                uuid.New(),
 		Name:              name,
@@ -21,7 +21,7 @@ func NewSpyCat(name string, yearsOfExperience int, breed string, salary float64)
 		Salary:            salary,
 	}
 
-	return c, nil
+	return c
 }
 
 func (c *SpyCat) Update(salary float64) {

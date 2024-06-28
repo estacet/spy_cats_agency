@@ -1,4 +1,4 @@
-CREATE TYPE Status AS ENUM ('initiated', 'ongoing', 'completed');
+CREATE TYPE Status AS ENUM ('started', 'completed');
 
 CREATE TABLE "public"."spy_cats" (
     id               uuid PRIMARY KEY,

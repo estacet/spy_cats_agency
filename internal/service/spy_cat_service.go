@@ -36,15 +36,12 @@ func NewSpyCatService(spyCatRepository *repository.SpyCatRepository) *SpyCatServ
 }
 
 func (s *SpyCatService) Create(ctx context.Context, args *CreateSpyCatArgs) error {
-	spyCat, err := model.NewSpyCat(
+	spyCat := model.NewSpyCat(
 		args.Name,
 		args.YearsOfExperience,
 		args.Breed,
 		args.Salary,
 	)
-	if err != nil {
-		return err
-	}
 
 	return s.spyCatRepository.Create(ctx, spyCat)
 }
