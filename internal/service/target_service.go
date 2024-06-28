@@ -73,9 +73,13 @@ func (s *TargetService) Update(ctx context.Context, id uuid.UUID, args *UpdateTa
 
 	target.Mission = mission
 
-	err = target.Update(args.Notes, args.Status)
+	err = target.UpdateNotes(args.Notes)
 	if err != nil {
 		return err
+	}
+
+	if args.Status == model.Completed {
+		target.Complete()
 	}
 
 	return s.repository.Update(ctx, target)

@@ -23,10 +23,14 @@ func NewMission(catId uuid.UUID) *Mission {
 	}
 }
 
-func (m *Mission) UpdateMissionStatus(newStatus Status) {
-	m.Status = newStatus
-}
-
 func (m *Mission) IsCatAssigned() bool {
 	return m.CatId.Valid
+}
+
+func (m *Mission) AssignCat(catId uuid.UUID) {
+	m.CatId.UUID = catId
+}
+
+func (m *Mission) Complete() {
+	m.Status = Completed
 }

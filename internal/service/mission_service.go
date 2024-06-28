@@ -8,6 +8,11 @@ import (
 	"spy-cats/internal/repository"
 )
 
+type UpdateMissingArgs struct {
+	CatId  uuid.NullUUID `json:"cat_id"`
+	Status model.Status  `json:"status"`
+}
+
 type MissionDetails struct {
 	ID     uuid.UUID     `json:"id"`
 	CatId  uuid.NullUUID `json:"cat_id"`
@@ -73,4 +78,21 @@ func (s *MissionService) Delete(ctx context.Context, id uuid.UUID) error {
 	}
 
 	return s.missionRepository.Delete(ctx, id)
+}
+
+func (s *MissionService) Update(ctx context.Context, id uuid.UUID, args *UpdateMissingArgs) error {
+	mission, err := s.missionRepository.GetById(ctx, id)
+	if err != nil {
+		return err
+	}
+
+	if args.CatId.Valid {
+		mission.AssignCat(args.CatId.UUID)
+	}
+
+	if args.Status == model.Completed {
+		mission.Complete()
+	}
+
+	return s.missionRepository.Update(ctx, mission)
 }

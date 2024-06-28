@@ -67,6 +67,18 @@ func (r *MissionRepository) GetList(ctx context.Context) ([]*model.Mission, erro
 	return missions, nil
 }
 
+func (r *MissionRepository) Update(ctx context.Context, mission *model.Mission) error {
+	query := `UPDATE missions SET cat_id = $2, status = $3 WHERE id = $1;`
+
+	_, err := r.conn.Exec(ctx, query,
+		mission.ID,
+		mission.CatId,
+		mission.Status,
+	)
+
+	return err
+}
+
 func (r *MissionRepository) Delete(ctx context.Context, id uuid.UUID) error {
 	query := `DELETE FROM missions WHERE id = $1`
 

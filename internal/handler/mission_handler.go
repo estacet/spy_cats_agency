@@ -1,8 +1,10 @@
 package handler
 
 import (
+	"encoding/json"
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
+	"io"
 	"net/http"
 	"spy-cats/internal/service"
 )
@@ -23,6 +25,7 @@ func (h *MissionCRUDHandler) RegisterRoutes(router *gin.Engine) {
 
 	router.GET(resourcePath, h.get)
 	router.GET(basePath, h.getList)
+	router.PATCH(resourcePath, h.update)
 	router.DELETE(resourcePath, h.delete)
 }
 
@@ -66,6 +69,54 @@ func (h *MissionCRUDHandler) getList(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"missions": missionList})
 }
 
+func (h *MissionCRUDHandler) update(c *gin.Context) {
+	id := c.Params.ByName("id")
+
+	parsedId, err := uuid.Parse(id)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"message": "Failed to delete mission by id",
+			"error":   err.Error(),
+		})
+
+		return
+	}
+
+	bodyBytes, err := io.ReadAll(c.Request.Body)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"message": "Failed to update mission profile",
+			"error":   err.Error(),
+		})
+
+		return
+	}
+	defer c.Request.Body.Close()
+
+	args := new(service.UpdateMissingArgs)
+
+	if err := json.Unmarshal(bodyBytes, args); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"message": "Failed to update mission profile",
+			"error":   err.Error(),
+		})
+
+		return
+	}
+
+	err = h.missionService.Update(c, parsedId, args)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"message": "Failed to update mission by id",
+			"error":   err.Error(),
+		})
+
+		return
+	}
+
+	c.Status(http.StatusOK)
+}
+
 func (h *MissionCRUDHandler) delete(c *gin.Context) {
 	id := c.Params.ByName("id")
 
@@ -85,6 +136,8 @@ func (h *MissionCRUDHandler) delete(c *gin.Context) {
 			"message": "Failed to delete mission by id",
 			"error":   err.Error(),
 		})
+
+		return
 	}
 
 	c.Status(http.StatusNoContent)
