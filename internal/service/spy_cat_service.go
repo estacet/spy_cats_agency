@@ -10,7 +10,7 @@ import (
 type CreateSpyCatArgs struct {
 	Name              string  `json:"name"`
 	YearsOfExperience int     `json:"years_of_experience"`
-	Breed             string  `json:"breed"`
+	Breed             string  `json:"breed" validate:"breedValidator"`
 	Salary            float64 `json:"salary"`
 }
 

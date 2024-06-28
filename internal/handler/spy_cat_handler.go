@@ -3,6 +3,7 @@ package handler
 import (
 	"encoding/json"
 	"github.com/gin-gonic/gin"
+	"github.com/go-playground/validator/v10"
 	"github.com/google/uuid"
 	"io"
 	"net/http"
@@ -11,13 +12,16 @@ import (
 
 type SpyCatCRUDHandler struct {
 	spyCatService *service.SpyCatService
+	validate      *validator.Validate
 }
 
 func NewSpyCatCRUDHandler(
 	spyCatService *service.SpyCatService,
+	validate *validator.Validate,
 ) *SpyCatCRUDHandler {
 	return &SpyCatCRUDHandler{
 		spyCatService: spyCatService,
+		validate:      validate,
 	}
 }
 
@@ -48,6 +52,16 @@ func (h *SpyCatCRUDHandler) create(c *gin.Context) {
 	args := new(service.CreateSpyCatArgs)
 
 	if err := json.Unmarshal(bodyBytes, args); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"message": "Failed to create spy cat profile",
+			"error":   err.Error(),
+		})
+
+		return
+	}
+
+	err = h.validate.Struct(args)
+	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"message": "Failed to create spy cat profile",
 			"error":   err.Error(),
