@@ -2,40 +2,32 @@ package main
 
 import (
 	"context"
-	"log"
-	"net/http"
-
-	//"github.com/estacet/spy-cats/internal/repository"
-	//"github.com/estacet/spy-cats/internal/service"
+	"github.com/gin-gonic/gin"
 	"github.com/jackc/pgx/v5"
-	//
-	//"github.com/estacet/spy-cats/internal/handler"
+	"log"
+	"spy-cats/internal/handler"
+	"spy-cats/internal/repository"
+	"spy-cats/internal/service"
 )
 
 func main() {
 	ctx := context.Background()
 
-	connStr := "postgres://postgres:pass@localhost:5433/spy_cats"
+	connStr := "postgres://postgres:pass@localhost:5436/spy_cats_agency"
 	conn, err := pgx.Connect(ctx, connStr)
 	if err != nil {
 		log.Fatal(err)
 	}
 	defer conn.Close(ctx)
 
-	raceRepository := repository.NewRaceRepository(conn)
+	r := gin.Default()
 
-	raceService := service.NewRaceService(raceRepository)
+	spyCatRepository := repository.NewSpyCatRepository(conn)
+	spyCatService := service.NewSpyCatService(spyCatRepository)
+	spyCatHandler := handler.NewSpyCatCRUDHandler(spyCatService)
+	spyCatHandler.RegisterRoutes(r)
 
-	healthCheckHandler := handler.NewHealthCheckHandler()
-	raceCRUDHandler := handler.NewRaceCRUDHandler(raceService)
-
-	mux := http.NewServeMux()
-
-	mux.Handle("/health", healthCheckHandler)
-	mux.Handle("/race", raceCRUDHandler)
-
-	apiServer := server.NewAPIServer(mux)
-	if err := apiServer.Start(); err != nil {
+	if err := r.Run(":8080"); err != nil {
 		log.Panic(err)
 	}
 }

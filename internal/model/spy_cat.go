@@ -15,21 +15,23 @@ type SpyCat struct {
 	Salary            float64   `json:"salary"`
 }
 
-func NewSpyCat(id uuid.UUID, name string, yearsOfExperience int, breed string, salary float64) *SpyCat {
+func NewSpyCat(name string, yearsOfExperience int, breed string, salary float64) (*SpyCat, error) {
 	c := &SpyCat{
-		ID:                id,
+		ID:                uuid.New(),
 		Name:              name,
 		YearsOfExperience: yearsOfExperience,
-		Salary:            salary,
 		Breed:             breed,
+		Salary:            salary,
 	}
 
 	err := c.validateBreed()
+
 	if err != nil {
 		fmt.Errorf("cat %v was not registered. The reason: %v", c.Name, err)
+		return nil, err
 	}
 
-	return c
+	return c, nil
 }
 
 func (c *SpyCat) validateBreed() error {
@@ -40,12 +42,12 @@ func (c *SpyCat) validateBreed() error {
 	}
 
 	for _, breed := range *breeds {
-
-		if breed.id == c.Breed {
+		if breed.Id == c.Breed {
 			fmt.Printf("Breed of agent %c approved", c.Name)
+			return nil
 		}
-
-		return apperror.NewBreedNotFoundError("The breed " + c.Breed + " is not registered")
+		err = apperror.NewBreedNotFoundError("The breed " + c.Breed + " is not registered")
 	}
-	return nil
+
+	return err
 }

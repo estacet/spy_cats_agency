@@ -15,42 +15,7 @@ type Weight struct {
 
 type Breed struct {
 	Weight
-	id                 string
-	name               string
-	cfa_url            string
-	vetstreet_url      string
-	vcahospitals_url   string
-	temperament        string
-	origin             string
-	country_codes      string
-	country_code       string
-	description        string
-	life_span          string
-	indoor             int
-	lap                int
-	alt_names          string
-	adaptability       int
-	affection_level    int
-	child_friendly     int
-	dog_friendly       int
-	energy_level       int
-	grooming           int
-	health_issues      int
-	intelligence       int
-	shedding_level     int
-	social_needs       int
-	stranger_friendly  int
-	vocalisation       int
-	experimental       int
-	hairless           int
-	natural            int
-	rare               int
-	rex                int
-	suppressed_tail    int
-	short_legs         int
-	wikipedia_url      string
-	hypoallergenic     int
-	reference_image_id string
+	Id string `json:"id"`
 }
 
 func GetBreeds() (*[]Breed, error) {
