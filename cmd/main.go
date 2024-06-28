@@ -34,9 +34,16 @@ func main() {
 	r := gin.Default()
 
 	spyCatRepository := repository.NewSpyCatRepository(conn)
+	missionRepository := repository.NewMissionRepository(conn)
+
 	spyCatService := service.NewSpyCatService(spyCatRepository)
+	missionService := service.NewMissionService(missionRepository)
+
 	spyCatHandler := handler.NewSpyCatCRUDHandler(spyCatService, validate)
 	spyCatHandler.RegisterRoutes(r)
+
+	missionHandler := handler.NewMissionCRUDHandler(missionService)
+	missionHandler.RegisterRoutes(r)
 
 	if err := r.Run(":8080"); err != nil {
 		log.Panic(err)
