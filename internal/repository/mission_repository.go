@@ -66,3 +66,11 @@ func (r *MissionRepository) GetList(ctx context.Context) ([]*model.Mission, erro
 
 	return missions, nil
 }
+
+func (r *MissionRepository) Delete(ctx context.Context, id uuid.UUID) error {
+	query := `DELETE FROM missions WHERE id = $1`
+
+	_, err := r.conn.Exec(ctx, query, id)
+
+	return err
+}

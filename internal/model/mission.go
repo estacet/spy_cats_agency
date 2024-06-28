@@ -12,18 +12,22 @@ const (
 
 type Mission struct {
 	ID     uuid.UUID
-	CatId  uuid.UUID
+	CatId  uuid.NullUUID
 	Status Status
 }
 
 func NewMission(catId uuid.UUID) *Mission {
 	return &Mission{
 		ID:     uuid.New(),
-		CatId:  catId,
+		CatId:  uuid.NullUUID{UUID: catId},
 		Status: Initiated,
 	}
 }
 
 func (m *Mission) UpdateMissionStatus(newStatus Status) {
 	m.Status = newStatus
+}
+
+func (m *Mission) IsCatAssigned() bool {
+	return m.CatId.Valid
 }

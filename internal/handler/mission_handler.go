@@ -23,6 +23,7 @@ func (h *MissionCRUDHandler) RegisterRoutes(router *gin.Engine) {
 
 	router.GET(resourcePath, h.get)
 	router.GET(basePath, h.getList)
+	router.DELETE(resourcePath, h.delete)
 }
 
 func (h *MissionCRUDHandler) get(c *gin.Context) {
@@ -63,4 +64,28 @@ func (h *MissionCRUDHandler) getList(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, gin.H{"missions": missionList})
+}
+
+func (h *MissionCRUDHandler) delete(c *gin.Context) {
+	id := c.Params.ByName("id")
+
+	parsedId, err := uuid.Parse(id)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"message": "Failed to delete mission by id",
+			"error":   err.Error(),
+		})
+
+		return
+	}
+
+	err = h.missionService.Delete(c, parsedId)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"message": "Failed to delete mission by id",
+			"error":   err.Error(),
+		})
+	}
+
+	c.Status(http.StatusNoContent)
 }
