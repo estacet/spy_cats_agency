@@ -21,7 +21,7 @@ func NewTarget(missionId uuid.UUID, name string, country string) *Target {
 		Id:        uuid.New(),
 		Name:      name,
 		Country:   country,
-		Status:    Initiated,
+		Status:    Started,
 		MissionId: missionId,
 	}
 }

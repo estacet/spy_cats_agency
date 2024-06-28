@@ -11,7 +11,7 @@ CREATE TABLE "public"."spy_cats" (
 CREATE TABLE "public"."missions" (
      id uuid PRIMARY KEY,
      cat_id uuid,
-     status Status NOT NULL DEFAULT ('initiated'),
+     status Status NOT NULL DEFAULT ('started'),
      FOREIGN KEY (cat_id) REFERENCES public."spy_cats"(ID)
 );
 
@@ -22,6 +22,6 @@ CREATE TABLE "public"."targets" (
     name VARCHAR(100) NOT NULL,
     country VARCHAR(50) NOT NULL,
     notes TEXT,
-    status Status NOT NULL DEFAULT ('initiated'),
+    status Status NOT NULL DEFAULT ('started'),
     FOREIGN KEY (mission_id) REFERENCES public.missions(ID)
 );

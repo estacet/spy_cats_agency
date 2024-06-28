@@ -52,6 +52,15 @@ func (h *TargetCRUDHandler) create(c *gin.Context) {
 	}
 
 	id, err := h.targetService.Create(c, args)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"message": "Failed to add target",
+			"error":   err.Error(),
+		})
+
+		return
+	}
+
 	c.JSON(http.StatusOK, gin.H{"id": id})
 }
 

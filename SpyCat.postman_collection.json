@@ -1,0 +1,559 @@
+{
+	"info": {
+		"_postman_id": "b3c6e24e-555f-4c9b-ae53-58b57e936a43",
+		"name": "SpyCat",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "9760199"
+	},
+	"item": [
+		{
+			"name": "Mission",
+			"item": [
+				{
+					"name": "Create",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"cat_id\": \"\",\n    \"targets\": [\n        {\n            \"name\": \"\",\n            \"country\": \"\"\n        },\n        {\n            \"name\": \"\",\n            \"country\": \"\"\n        },\n        {\n            \"name\": \"\",\n            \"country\": \"\"\n        }\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "127.0.0.1:8080/mission",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8080",
+							"path": [
+								"mission"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "127.0.0.1:8080/mission/e08d9680-9e34-4efc-b68d-bed6fb6c4403",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8080",
+							"path": [
+								"mission",
+								"e08d9680-9e34-4efc-b68d-bed6fb6c4403"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"cat_id\": null,\n    \"status\": \"completed\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "127.0.0.1:8080/mission/fced0dcf-cb14-48fa-90c3-846c25427e5e",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8080",
+							"path": [
+								"mission",
+								"fced0dcf-cb14-48fa-90c3-846c25427e5e"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "127.0.0.1:8080/mission/e08d9680-9e34-4efc-b68d-bed6fb6c4403",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8080",
+							"path": [
+								"mission",
+								"e08d9680-9e34-4efc-b68d-bed6fb6c4403"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get List",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "127.0.0.1:8080/mission",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8080",
+							"path": [
+								"mission"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Mission targets",
+			"item": [
+				{
+					"name": "Create",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"mission_id\": \"\",\n    \"name\": \"\",\n    \"country\": \"\"\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "127.0.0.1:8080/mission_target",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8080",
+							"path": [
+								"mission_target"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"status\": \"\",\n    \"notes\": \"\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "127.0.0.1:8080/mission_target",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8080",
+							"path": [
+								"mission_target"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "127.0.0.1:8080/mission_target/3be6de93-4d52-4067-8463-aae1e19d8783",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8080",
+							"path": [
+								"mission_target",
+								"3be6de93-4d52-4067-8463-aae1e19d8783"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Use cases",
+			"item": [
+				{
+					"name": "Ability to create a mission",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"cat_id\": \"e08d9680-9e34-4efc-b68d-bed6fb6c4403\",\n    \"targets\": [\n        {\n            \"name\": \"First target\",\n            \"country\": \"Ukraine\"\n        },\n        {\n            \"name\": \"Second  target\",\n            \"country\": \"Ukraine\"\n        },\n        {\n            \"name\": \"Third  target\",\n            \"country\": \"Poland\"\n        }\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "127.0.0.1:8080/mission",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8080",
+							"path": [
+								"mission"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Ability to update mission",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"cat_id\": \"e08d9680-9e34-4efc-b68d-bed6fb6c4403\",\n    \"status\": \"completed\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "127.0.0.1:8080/mission/9edc2076-8e43-4cf5-b60e-e5d2ad26f170",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8080",
+							"path": [
+								"mission",
+								"9edc2076-8e43-4cf5-b60e-e5d2ad26f170"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Ability to delete a mission",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "127.0.0.1:8080/mission/9edc2076-8e43-4cf5-b60e-e5d2ad26f170",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8080",
+							"path": [
+								"mission",
+								"9edc2076-8e43-4cf5-b60e-e5d2ad26f170"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Ability to update mission targets",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"status\": \"completed\",\n    \"notes\": \"some notes\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "127.0.0.1:8080/mission_target",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8080",
+							"path": [
+								"mission_target"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Ability to delete targets",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "127.0.0.1:8080/mission_target/3be6de93-4d52-4067-8463-aae1e19d8783",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8080",
+							"path": [
+								"mission_target",
+								"3be6de93-4d52-4067-8463-aae1e19d8783"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Ability to add targets to an mission",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"mission_id\": \"9edc2076-8e43-4cf5-b60e-e5d2ad26f170\",\n    \"name\": \"New target\",\n    \"country\": \"Italy\"\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "127.0.0.1:8080/mission_target",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8080",
+							"path": [
+								"mission_target"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Ability to assign a cat to a mission",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"cat_id\": \"e08d9680-9e34-4efc-b68d-bed6fb6c4403\",\n    \"status\": \"initiated\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "127.0.0.1:8080/mission/9edc2076-8e43-4cf5-b60e-e5d2ad26f170",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8080",
+							"path": [
+								"mission",
+								"9edc2076-8e43-4cf5-b60e-e5d2ad26f170"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Cat",
+			"item": [
+				{
+					"name": "Get breeds",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://api.thecatapi.com/v1/breeds",
+							"protocol": "https",
+							"host": [
+								"api",
+								"thecatapi",
+								"com"
+							],
+							"path": [
+								"v1",
+								"breeds"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"test\",\n    \"years_of_experience\": 5,\n\t\"breed\": \"tang\",\n\t\"salary\": 256.36\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "127.0.0.1:8080/spyCat",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8080",
+							"path": [
+								"spyCat"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get by id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "127.0.0.1:8080/spyCat/5ad146f5-fe0b-4b50-a14f-af8101706975",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8080",
+							"path": [
+								"spyCat",
+								"5ad146f5-fe0b-4b50-a14f-af8101706975"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get list",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "127.0.0.1:8080/spyCat",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8080",
+							"path": [
+								"spyCat"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"salary\": 444.77\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "127.0.0.1:8080/spyCat/5ad146f5-fe0b-4b50-a14f-af8101706975",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8080",
+							"path": [
+								"spyCat",
+								"5ad146f5-fe0b-4b50-a14f-af8101706975"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

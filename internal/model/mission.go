@@ -5,7 +5,7 @@ import "github.com/google/uuid"
 type Status string
 
 const (
-	Initiated Status = "initiated"
+	Started   Status = "started"
 	Completed Status = "completed"
 )
 
@@ -19,7 +19,7 @@ func NewMission(catId uuid.NullUUID) *Mission {
 	return &Mission{
 		ID:     uuid.New(),
 		CatId:  catId,
-		Status: Initiated,
+		Status: Started,
 	}
 }
 

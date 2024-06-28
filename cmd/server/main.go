@@ -38,7 +38,7 @@ func main() {
 	targetRepository := repository.NewTargetRepository(conn)
 
 	spyCatService := service.NewSpyCatService(spyCatRepository)
-	missionService := service.NewMissionService(missionRepository)
+	missionService := service.NewMissionService(missionRepository, targetRepository)
 	targetService := service.NewTargetService(targetRepository, missionRepository)
 
 	spyCatHandler := handler.NewSpyCatCRUDHandler(spyCatService, validate)
