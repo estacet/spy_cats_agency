@@ -51,3 +51,7 @@ func (c *SpyCat) validateBreed() error {
 
 	return err
 }
+
+func (c *SpyCat) Update(salary float64) {
+	c.Salary = salary
+}

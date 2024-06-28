@@ -14,8 +14,12 @@ type CreateSpyCatArgs struct {
 	Salary            float64 `json:"salary"`
 }
 
+type UpdateSpyCatArgs struct {
+	Salary float64 `json:"salary"`
+}
+
 type SpyCatDetails struct {
-	Id                uuid.UUID `json:"id"`
+	ID                uuid.UUID `json:"id"`
 	Name              string    `json:"name"`
 	YearsOfExperience int       `json:"years_of_experience"`
 	Breed             string    `json:"breed"`
@@ -62,37 +66,35 @@ func (s *SpyCatService) GetById(ctx context.Context, id uuid.UUID) (*SpyCatDetai
 	return requestedSpyCat, nil
 }
 
-//func (s *RaceService) GetList(ctx context.Context) ([]*RacesListItem, error) {
-//	races, err := s.raceRepository.GetList(ctx)
-//	if err != nil {
-//		return nil, err
-//	}
-//
-//	racesList := make([]*RacesListItem, len(races))
-//
-//	for i, race := range races {
-//		raceItem := RacesListItem{Id: race.Id, Title: race.Title}
-//		raceItemPointer := &raceItem
-//		racesList[i] = raceItemPointer
-//	}
-//
-//	return racesList, nil
-//}
+func (s *SpyCatService) GetList(ctx context.Context) ([]*SpyCatDetails, error) {
+	spyCats, err := s.spyCatRepository.GetList(ctx)
+	if err != nil {
+		return nil, err
+	}
 
-//func (s *RaceService) Update(ctx context.Context, id uuid.UUID, args *RaceArgs) error {
-//	race, err := s.raceRepository.GetById(ctx, id)
-//	if err != nil {
-//		return err
-//	}
-//
-//	race.Update(
-//		args.Title,
-//		args.Description,
-//		args.MaxParticipantsCount,
-//		args.RegistrationAt,
-//		args.StartAt,
-//		args.Category,
-//	)
-//
-//	return s.raceRepository.Update(ctx, race)
-//}
+	spyCatsList := make([]*SpyCatDetails, len(spyCats))
+
+	for i, spyCat := range spyCats {
+		cat := &SpyCatDetails{
+			ID:                spyCat.ID,
+			Name:              spyCat.Name,
+			YearsOfExperience: spyCat.YearsOfExperience,
+			Breed:             spyCat.Breed,
+			Salary:            spyCat.Salary,
+		}
+		spyCatsList[i] = cat
+	}
+
+	return spyCatsList, nil
+}
+
+func (s *SpyCatService) Update(ctx context.Context, id uuid.UUID, args *UpdateSpyCatArgs) error {
+	spyCat, err := s.spyCatRepository.GetById(ctx, id)
+	if err != nil {
+		return err
+	}
+
+	spyCat.Update(args.Salary)
+
+	return s.spyCatRepository.Update(ctx, spyCat)
+}

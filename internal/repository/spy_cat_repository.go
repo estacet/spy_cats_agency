@@ -19,7 +19,7 @@ func NewSpyCatRepository(conn *pgx.Conn) *SpyCatRepository {
 
 func (r *SpyCatRepository) Create(ctx context.Context, spyCat *model.SpyCat) error {
 	query := `
-INSERT INTO public."spy_cats" (id, name, experience_years, breed, salary)
+INSERT INTO spy_cats (id, name, experience_years, breed, salary)
 VALUES ($1, $2, $3, $4, $5)`
 
 	_, err := r.conn.Exec(ctx, query,
@@ -57,52 +57,45 @@ func (r *SpyCatRepository) GetById(ctx context.Context, id uuid.UUID) (*model.Sp
 	return spyCat, nil
 }
 
-//
-//func (r *spyCatRepository) Update(ctx context.Context, spyCat *model.spyCat) error {
-//	query := `UPDATE spyCats
-//		SET (name, phone_number, age, weight, category) = ($1, $2, $3, $4, $5)
-//		WHERE id = $6;`
-//
-//	_, err := r.conn.Exec(ctx, query,
-//		spyCat.Name,
-//		spyCat.PhoneNumber,
-//		spyCat.Age,
-//		spyCat.Weight,
-//		spyCat.Category,
-//		spyCat.Id,
-//	)
-//
-//	return err
-//}
-//
-//func (r *spyCatRepository) GetList(ctx context.Context) ([]*model.spyCat, error) {
-//	query := `SELECT * FROM spyCats`
-//
-//	rows, err := r.conn.Query(ctx, query)
-//	if err != nil {
-//		return nil, err
-//	}
-//
-//	var spyCatsList []*model.spyCat
-//
-//	for rows.Next() {
-//		spyCat := new(model.spyCat)
-//
-//		err := rows.Scan(
-//			&spyCat.Id,
-//			&spyCat.Name,
-//			&spyCat.PhoneNumber,
-//			&spyCat.Age,
-//			&spyCat.Weight,
-//			&spyCat.Category,
-//		)
-//		if err != nil {
-//			return nil, err
-//		}
-//
-//		spyCatsList = append(spyCatsList, spyCat)
-//	}
-//
-//	return spyCatsList, nil
-//}
-//
+func (r *SpyCatRepository) GetList(ctx context.Context) ([]*model.SpyCat, error) {
+	query := `SELECT * FROM spy_cats`
+
+	rows, err := r.conn.Query(ctx, query)
+	if err != nil {
+		return nil, err
+	}
+
+	var spyCatsList []*model.SpyCat
+
+	for rows.Next() {
+		spyCat := new(model.SpyCat)
+
+		err := rows.Scan(
+			&spyCat.ID,
+			&spyCat.Name,
+			&spyCat.YearsOfExperience,
+			&spyCat.Breed,
+			&spyCat.Salary,
+		)
+		if err != nil {
+			return nil, err
+		}
+
+		spyCatsList = append(spyCatsList, spyCat)
+	}
+
+	return spyCatsList, nil
+}
+
+func (r *SpyCatRepository) Update(ctx context.Context, spyCat *model.SpyCat) error {
+	query := `UPDATE spy_cats
+		SET salary = $2
+		WHERE id = $1;`
+
+	_, err := r.conn.Exec(ctx, query,
+		spyCat.ID,
+		spyCat.Salary,
+	)
+
+	return err
+}
