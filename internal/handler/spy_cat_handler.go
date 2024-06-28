@@ -70,7 +70,7 @@ func (h *SpyCatCRUDHandler) create(c *gin.Context) {
 		return
 	}
 
-	err = h.spyCatService.Create(c, args)
+	id, err := h.spyCatService.Create(c, args)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"message": "Failed to create spy cat profile",
@@ -80,7 +80,7 @@ func (h *SpyCatCRUDHandler) create(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"message": "Successful Spy cat profile creation."})
+	c.JSON(http.StatusOK, gin.H{"id": id})
 }
 
 func (h *SpyCatCRUDHandler) get(c *gin.Context) {
@@ -157,7 +157,7 @@ func (h *SpyCatCRUDHandler) update(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"message": "Successful Spy cat profile update."})
+	c.Status(http.StatusOK)
 }
 
 func (h *SpyCatCRUDHandler) getList(c *gin.Context) {

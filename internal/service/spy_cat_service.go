@@ -35,7 +35,7 @@ func NewSpyCatService(spyCatRepository *repository.SpyCatRepository) *SpyCatServ
 	return &SpyCatService{spyCatRepository: spyCatRepository}
 }
 
-func (s *SpyCatService) Create(ctx context.Context, args *CreateSpyCatArgs) error {
+func (s *SpyCatService) Create(ctx context.Context, args *CreateSpyCatArgs) (*uuid.UUID, error) {
 	spyCat := model.NewSpyCat(
 		args.Name,
 		args.YearsOfExperience,
@@ -43,7 +43,12 @@ func (s *SpyCatService) Create(ctx context.Context, args *CreateSpyCatArgs) erro
 		args.Salary,
 	)
 
-	return s.spyCatRepository.Create(ctx, spyCat)
+	err := s.spyCatRepository.Create(ctx, spyCat)
+	if err != nil {
+		return nil, err
+	}
+
+	return &spyCat.ID, nil
 }
 
 func (s *SpyCatService) GetById(ctx context.Context, id uuid.UUID) (*SpyCatDetails, error) {

@@ -17,7 +17,8 @@ type CreateTargetArgs struct {
 }
 
 type UpdateTargetArgs struct {
-	Notes string `json:"notes"`
+	Notes  string       `json:"notes"`
+	Status model.Status `json:"status"`
 }
 
 type TargetService struct {
@@ -35,14 +36,14 @@ func NewTargetService(
 	}
 }
 
-func (s *TargetService) Create(ctx context.Context, args *CreateTargetArgs) error {
+func (s *TargetService) Create(ctx context.Context, args *CreateTargetArgs) (*uuid.UUID, error) {
 	mission, err := s.missionRepository.GetById(ctx, args.MissionId)
 	if err != nil {
-		return err
+		return nil, err
 	}
 
 	if mission.Status == model.Completed {
-		return errors.New("cannot add target to completed mission")
+		return nil, errors.New("cannot add target to completed mission")
 	}
 
 	target := model.NewTarget(
@@ -53,8 +54,29 @@ func (s *TargetService) Create(ctx context.Context, args *CreateTargetArgs) erro
 	)
 
 	if err := s.repository.Create(ctx, target); err != nil {
+		return nil, err
+	}
+
+	return &target.Id, nil
+}
+
+func (s *TargetService) Update(ctx context.Context, id uuid.UUID, args *UpdateTargetArgs) error {
+	target, err := s.repository.GetById(ctx, id)
+	if err != nil {
 		return err
 	}
 
-	return nil
+	mission, err := s.missionRepository.GetById(ctx, target.MissionId)
+	if err != nil {
+		return err
+	}
+
+	target.Mission = mission
+
+	err = target.Update(args.Notes, args.Status)
+	if err != nil {
+		return err
+	}
+
+	return s.repository.Update(ctx, target)
 }

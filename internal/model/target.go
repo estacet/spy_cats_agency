@@ -27,15 +27,12 @@ func NewTarget(missionId uuid.UUID, name string, country string, notes string) *
 	}
 }
 
-func (t *Target) UpdateStatus() {
-	t.Status = Completed
-}
-
-func (t *Target) UpdateNotes(notes string) error {
+func (t *Target) Update(notes string, status Status) error {
 	if t.Mission.Status == Completed || t.Status == Completed {
 		return errors.New("cannot update notes for Completed instance")
 	}
 
 	t.Notes = notes
+	t.Status = status
 	return nil
 }
